@@ -40,7 +40,7 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="160">
-                
+
             </ColumnDefinition>
             <ColumnDefinition>
 
@@ -57,8 +57,12 @@
                       HorizontalContentAlignment="Left" 
                       HeadersVisibility="None">
                 <DataGrid.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Remove note" Command="{Binding Path=RemoveCommand}" Padding="5,5,5,0"/>
+                    <ContextMenu Background="#FF252525">
+                        <MenuItem Header="Remove note" 
+                                  Command="{Binding Path=RemoveCommand}"
+                                  Padding="5,5,5,5"
+                                  Background="#FF252525"
+                                  Foreground="White"/>
                     </ContextMenu>
                 </DataGrid.ContextMenu>
                 <DataGrid.Columns>
@@ -93,9 +97,7 @@
         <Grid Grid.Column="0" Grid.Row="1">
             <Button Content="Add"
                     Command="{Binding AddCommand}"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Width="30"/>
+                    Background="#FF8ED28A"/>
         </Grid>
 
         <Grid Grid.Column="1" Grid.Row="0">
@@ -113,22 +115,24 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </TextBox>
-            <TextBox TextWrapping="Wrap"
-                     BorderThickness="0"
-                     Background="#252525"
-                     Text="{Binding SelectedNote.Text}"
-                     Margin="0,40,0,0"
-                     VerticalAlignment="Stretch"
-                     SelectionBrush="#663484C3"
-                     Foreground="White"
-                     SelectionTextBrush="Black" Padding="5,5,5,5" AcceptsReturn="True">
+            <RichTextBox
+                    local:RichTextBoxHelper.DocumentRTF="{Binding SelectedNote.Document}"
+                    BorderThickness="0"
+                    Background="#252525"
+                    Margin="0,40,0,0"
+                    VerticalAlignment="Stretch"
+                    SelectionBrush="#663484C3"
+                    Foreground="White"
+                    SelectionTextBrush="Black" 
+                    Padding="5,5,5,5" 
+                    AcceptsReturn="True">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="LostFocus">
                         <i:InvokeCommandAction Command="{Binding Path=UpdateCommand}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-            </TextBox>
+            </RichTextBox>
         </Grid>
-        
+
     </Grid>
 </Window>
