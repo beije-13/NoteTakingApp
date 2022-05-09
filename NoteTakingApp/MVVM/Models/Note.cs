@@ -13,10 +13,35 @@ namespace NoteTakingApp.MVVM.Models
         private int id;
         private string name;
         private string text;
+        private string document;
         private DateTime dateCreated;
         private DateTime dateUpdated;
 
-        public int Id { get; set; }
+        public int Id
+        { 
+            get 
+            {
+                return id;
+            }
+            set 
+            {
+                id = value;
+            } 
+        }
+
+        public string Document 
+        { 
+            get 
+            {
+                return document;
+            } 
+            set 
+            {
+                document = value;
+                RaisePropertyChanged(nameof(Document));
+            } 
+        }
+
 
         public string Name 
         {

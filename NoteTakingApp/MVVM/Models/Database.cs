@@ -86,7 +86,7 @@ namespace NoteTakingApp.MVVM.Models
                         Note N = new Note();
                         N.Id = (int)row["ID"];
                         N.Name = ConvertFromDBVal<String>(row["NOTENAME"]);
-                        N.Text = ConvertFromDBVal<String>(row["NOTETEXT"]);
+                        N.Document = ConvertFromDBVal<String>(row["DOCUMENT"]);
                         N.DateCreated = (DateTime)row["DATECREATED"];
                         N.DateUpdated = (DateTime)row["DATEUPDATED"];
                         notes.Add(N);
@@ -100,14 +100,23 @@ namespace NoteTakingApp.MVVM.Models
         {
             using (OleDbConnection connection = new OleDbConnection(string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0}", DBPATH)))
             {
-                using (OleDbCommand updateCommand = new OleDbCommand("UPDATE NOTES SET [NOTENAME] = ?, [NOTETEXT] = ?, DATEUPDATED = @DATEUPDATED WHERE [ID] = ?", connection))
+
+                // idk, for some reason it doesn't accept null as a value and throws
+                // "parameter 2 does not have a default value"
+                string command;
+                bool DOC_NOT_NULL = note.Document != null;
+                command = "UPDATE NOTES SET[NOTENAME] = ?, " + (DOC_NOT_NULL ? "[DOCUMENT] = ?, " : "") + "DATEUPDATED = @DATEUPDATED WHERE[ID] = ? ";
+
+                using (OleDbCommand updateCommand = new OleDbCommand(command, connection))
                 {
                     connection.Open();
                     updateCommand.Parameters.AddWithValue("@NOTENAME", note.Name);
-                    updateCommand.Parameters.AddWithValue("@NOTETEXT", note.Text);
+                    if (DOC_NOT_NULL)
+                    {
+                        updateCommand.Parameters.AddWithValue("@DOCUMENT", note.Document);
+                    }
                     updateCommand.Parameters.AddWithValue("@DATEUPDATED", DbType.DateTime).Value = note.DateUpdated.ToString();
                     updateCommand.Parameters.AddWithValue("@ID", note.Id);
-
                     updateCommand.ExecuteNonQuery();
                 }
             }
