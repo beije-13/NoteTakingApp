@@ -65,8 +65,6 @@ namespace NoteTakingApp
                                     content.Save(stream, DataFormats.Rtf);
                                 }
                             }
-                     
-                     
                      **/
 
                     var richTextBox = (RichTextBox)obj;
